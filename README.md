@@ -1,98 +1,110 @@
-# wanderlust
-# 🌍 Wanderlust
+🌍 Wanderlust
 
-Wanderlust is a full-stack travel web application inspired by Airbnb.  
-It allows users to explore, list, and manage travel accommodations with an easy-to-use interface.
+Wanderlust is a full-stack travel web application inspired by Airbnb.
+It allows users to explore, list, and manage travel accommodations with an easy-to-use and responsive interface.
 
----
+🚀 Features
+🏠 Browse travel listings
+🔍 Search places by location
+👤 User authentication (Signup / Login)
+➕ Add new property listings
+✏️ Edit & ❌ Delete listings
+📸 Image upload support (Cloudinary)
+📍 Location-based listings with map
+📱 Responsive UI
 
-## 🚀 Features
+🐍 New Python-Powered Features
 
-- 🏠 Browse travel listings
-- 🔍 Search places by location
-- 👤 User authentication (Signup / Login)
-- ➕ Add new property listings
-- ✏️ Edit & ❌ delete listings
-- 📸 Image upload support
-- 📍 Location-based listings
-- 📱 Responsive UI
+🌦️ Live Weather Information (Python + API)
+Displays real-time weather data for selected travel destinations using a Python script.
 
----
+🤖 Travel Suggestion Engine (Python Logic)
+Suggests destinations based on user preferences (e.g. beach, mountains, budget).
 
-## 🛠️ Tech Stack
+These Python scripts are integrated with the Node.js backend using child processes, showcasing cross-language backend integration.
 
-**Frontend**
-- HTML
-- CSS
-- JavaScript
-- EJS
+🛠️ Tech Stack
+Frontend
+HTML
+CSS
+JavaScript
+EJS
+Backend
+Node.js
+Express.js
 
-**Backend**
-- Node.js
-- Express.js
+Python (for weather, analytics & suggestions)
 
-**Database**
-- MongoDB
-- Mongoose
+Database
+MongoDB
+Mongoose
+Other Tools
 
-**Other Tools**
-- Cloudinary (for image upload)
-- Map API (for location display)
+Cloudinary (Image Upload)
 
----
+Map API (Location Display)
 
-## 📁 Project Structure
+OpenWeatherMap API
 
+📁 Project Structure
 wanderlust/
 ├── app.js
 ├── package.json
 ├── public/
-│ ├── css/
-│ └── js/
+│   ├── css/
+│   └── js/
 ├── views/
 ├── models/
 ├── routes/
 ├── utils/
+├── python/
+│   ├── weather.py
+│   ├── suggest.py
+│   └── analytics.py
 ├── schema.js
 └── README.md
 
-## ⚙️ Installation & Setup
-
-1️⃣ Clone the repository  
-
+⚙️ Installation & Setup
+1️⃣ Clone the repository
 git clone https://github.com/hemant16singh/wanderlust.git
 cd wanderlust
 
-
-2️⃣ Install dependencies
-
+2️⃣ Install Node dependencies
 npm install
 
+3️⃣ Install Python dependencies
+pip install requests pandas
 
-3️⃣ Create a .env file and add:
-
+4️⃣ Create a .env file
 PORT=5000
 DB_URL=your_mongodb_connection_string
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
+OPENWEATHER_API_KEY=your_api_key
 
-
-4️⃣ Start the server
-
+5️⃣ Start the server
 npm start
 
-
-5️⃣ Open in browser
-
+6️⃣ Open in browser
 http://localhost:5000
 
 🧪 Usage
 
-Visit homepage to explore listings
+Visit homepage to explore travel listings
+Login/Register to add your own properties
+Edit or delete your listings
+View live weather info for destinations
+Get travel suggestions using Python logic
+Analyze popular locations via Python analytics
 
-Login/Register to add your own listings
+🎯 Key Learning Outcomes
 
-Update or delete your properties
+Full-stack web development using Node.js & MongoDB
+Secure user authentication and authorization
+Media handling with Cloudinary
+Python integration with Node.js backend
 
-Browse locations easily
+API consumption & data analytics using Python
+
+Clean MVC project structure
