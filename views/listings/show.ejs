@@ -1,0 +1,267 @@
+
+
+
+
+
+<% layout('layouts/boilerplate') %>
+
+<body class="bg-light">
+    <div class="container my-5">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="/listings" class="text-decoration-none">All Listings</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><%= listing.title %></li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <!-- Listing Details -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <!-- Image -->
+                    <img src="<%= listing.image.url %>" class="card-img-top" 
+                         style="height: 400px; object-fit: cover;" 
+                         alt="<%= listing.title %>"
+                         onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'">
+
+                    <div class="card-body">
+                        <h1 class="card-title h2 text-primary mb-3"><%= listing.title %></h1>
+                        
+                        <!-- Location and Rating -->
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary me-3">
+                                <i class="fas fa-map-marker-alt me-1"></i><%= listing.location %>, <%= listing.country %>
+                            </span>
+                            <span class="badge bg-warning text-dark">
+                                <i class="fas fa-star me-1"></i>4.8 (24 reviews)
+                            </span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <h4 class="h5 text-dark">About this place</h4>
+                            <p class="card-text lead"><%= listing.description %></p>
+                        </div>
+
+                        <!-- Basic Details -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <p><strong>Price:</strong> <span class="text-success h5">₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> /night</span></p>
+                                <p><strong>Location:</strong> <%= listing.location %></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Country:</strong> <%= listing.country %></p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 mb-4">
+                            <a href="/listings/<%= listing._id %>/edit" class="btn btn-warning">
+                                <i class="fas fa-edit me-2"></i>Edit Listing
+                            </a>
+                            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" 
+                                  onsubmit="return confirm('Are you sure you want to delete this listing?');">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash me-2"></i>Delete Listing
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Section -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="h5 text-dark mb-4">
+                            <i class="fas fa-comments me-2"></i>Leave a Review
+                        </h4>
+                        
+                        <!-- Review Form -->
+                        <div class="p-4 bg-light rounded">
+                            <form action="/listings/<%= listing._id %>/reviews" method="POST">
+                                <div class="mb-3">
+                                    <label class="form-label">Rating</label>
+                                    <div class="rating-stars mb-2">
+                                        <% for(let i=1; i<=5; i++) { %>
+                                            <input type="radio" id="star<%= i %>" name="review[rating]" value="<%= i %>" class="d-none">
+                                            <label for="star<%= i %>" class="star-label">
+                                                <i class="far fa-star"></i>
+                                            </label>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="comment" class="form-label">Your Review</label>
+                                    <textarea name="review[comment]" id="comment" class="form-control" rows="4" 
+                                              placeholder="Share your experience..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Review
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🆕 BOOKING WIDGET - YEH SECTION ADD KARO -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <h3 class="text-success display-6 fw-bold">
+                                ₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %>
+                            </h3>
+                            <small class="text-muted">per night</small>
+                        </div>
+
+                        <!-- Booking Form -->
+                        <form action="/listings/<%= listing._id %>/book" method="POST" id="bookingForm">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Check-in Date</label>
+                                <input type="date" name="checkIn" class="form-control" id="checkIn" required 
+                                       min="<%= new Date().toISOString().split('T')[0] %>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Check-out Date</label>
+                                <input type="date" name="checkOut" class="form-control" id="checkOut" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Number of Guests</label>
+                                <select name="guests" class="form-select" required>
+                                    <% for(let i=1; i<=8; i++) { %>
+                                        <option value="<%= i %>" <%= i === 2 ? 'selected' : '' %>>
+                                            <%= i %> Guest<%= i > 1 ? 's' : '' %>
+                                        </option>
+                                    <% } %>
+                                </select>
+                            </div>
+
+                            <!-- Price Breakdown -->
+                            <div class="border-top border-bottom py-3 mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>₹<%= listing.price %> x <span id="nights">0</span> nights</span>
+                                    <span id="basePrice">₹0</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Cleaning fee</span>
+                                    <span>₹500</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Service fee</span>
+                                    <span>₹300</span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between fw-bold fs-5">
+                                    <span>Total</span>
+                                    <span id="totalPrice">₹0</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success btn-lg w-100 py-3">
+                                <i class="fas fa-calendar-check me-2"></i>Book Now
+                            </button>
+
+                            <p class="text-center text-muted small mt-2">
+                                <i class="fas fa-shield-alt me-1"></i>Your payment is secure
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkIn = document.getElementById('checkIn');
+            const checkOut = document.getElementById('checkOut');
+            const nightsSpan = document.getElementById('nights');
+            const basePriceSpan = document.getElementById('basePrice');
+            const totalPriceSpan = document.getElementById('totalPrice');
+            const pricePerNight = <%= listing.price %>;
+
+            function calculateTotal() {
+                if (checkIn.value && checkOut.value) {
+                    const checkInDate = new Date(checkIn.value);
+                    const checkOutDate = new Date(checkOut.value);
+                    
+                    if (checkOutDate > checkInDate) {
+                        const timeDiff = checkOutDate - checkInDate;
+                        const nights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                        const basePrice = pricePerNight * nights;
+                        const total = basePrice + 500 + 300; // cleaning + service fee
+
+                        nightsSpan.textContent = nights;
+                        basePriceSpan.textContent = `₹${basePrice.toLocaleString('en-IN')}`;
+                        totalPriceSpan.textContent = `₹${total.toLocaleString('en-IN')}`;
+                    }
+                }
+            }
+
+            checkIn.addEventListener('change', calculateTotal);
+            checkOut.addEventListener('change', calculateTotal);
+
+            // Set minimum check-out date based on check-in
+            checkIn.addEventListener('change', function() {
+                checkOut.min = this.value;
+                if (checkOut.value && checkOut.value < this.value) {
+                    checkOut.value = '';
+                    calculateTotal();
+                }
+            });
+
+            // Star rating functionality
+            const starLabels = document.querySelectorAll('.star-label');
+            starLabels.forEach((label, index) => {
+                label.addEventListener('click', function() {
+                    const starId = this.htmlFor.replace('star', '');
+                    
+                    // Update all stars
+                    starLabels.forEach((l, i) => {
+                        const icon = l.querySelector('i');
+                        if (i < starId) {
+                            icon.className = 'fas fa-star text-warning';
+                        } else {
+                            icon.className = 'far fa-star';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    <!-- Additional CSS -->
+    <style>
+        .sticky-top {
+            position: sticky;
+            z-index: 100;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 5px;
+        }
+
+        .star-label {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ddd;
+            transition: color 0.2s;
+        }
+
+        .star-label:hover,
+        .star-label:hover ~ .star-label {
+            color: #ffc107 !important;
+        }
+
+        input[type="radio"]:checked ~ .star-label {
+            color: #ffc107;
+        }
+    </style>
+</body>
